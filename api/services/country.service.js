@@ -29,7 +29,7 @@ class CountryService {
       return res.body;
     } catch (errorResponse) {
       this.maybeThrowNoDataFromServie(errorResponse);
-      throw errorResponse;
+      throw new this.errors.ServiceNotAvailableError();
     }
   }
 

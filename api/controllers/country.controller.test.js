@@ -107,5 +107,35 @@ describe('CountryController', () => {
         expect(response.body.code).to.eql(500);
       });
     });
+
+    describe('when it receive a country name and it is not found in database and service returns an error', () => {
+      const countryName = 'Spain';
+
+      let response;
+      before(async (done) => {
+        nock(config.services.countries.host)
+          .get(`${config.services.countries.namePath}/${countryName}`)
+          .reply(500, 'Unexpected error');
+
+        supertest(app)
+          .get(`/country/${countryName}/capital`)
+          .end((req, res) => {
+            response = res;
+            done();
+          });
+      });
+      after(() => {
+        nock.cleanAll();
+      });
+
+      it('should send error 500', () => {
+        expect(response.statusCode).to.eql(500);
+      });
+
+      it('should return the error to the client', () => {
+        expect(response.body.message).to.eql(errors.ServiceNotAvailableError.message);
+        expect(response.body.code).to.eql(500);
+      });
+    });
   });
 });
