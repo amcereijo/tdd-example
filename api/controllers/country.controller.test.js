@@ -98,13 +98,13 @@ describe('CountryController', () => {
         nock.cleanAll();
       });
 
-      it('should send error 500', () => {
-        expect(response.statusCode).to.eql(500);
+      it('should send error 404', () => {
+        expect(response.statusCode).to.eql(404);
       });
 
       it('should return the error to the client', () => {
         expect(response.body.message).to.eql(errors.DataNotFoundInServiceError.message);
-        expect(response.body.code).to.eql(500);
+        expect(response.body.code).to.eql(404);
       });
     });
 

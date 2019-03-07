@@ -1,3 +1,5 @@
+const ERROR_500 = 500;
+
 class CountryController {
   /**
    *
@@ -30,7 +32,8 @@ class CountryController {
 
       res.send({ name, capital: country.capital });
     } catch (err) {
-      res.status(500).send({ code: 500, message: err.message });
+      const code = err.code || ERROR_500;
+      res.status(code).send({ code, message: err.message });
     }
   }
 }

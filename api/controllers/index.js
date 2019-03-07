@@ -7,7 +7,7 @@ const errors = require('../errors');
 
 const monitController = new MonitController();
 const countryService = new CountryService(CountryModel, config, errors);
-const countryController = new CountryController(countryService);
+const countryController = new CountryController(countryService, errors);
 
 module.exports = [
   {

@@ -4,6 +4,7 @@ class DataNotFoundInServiceError extends Error {
   constructor() {
     super();
     this.message = COUNTRY_NOT_FOUND;
+    this.code = 404;
   }
 }
 
