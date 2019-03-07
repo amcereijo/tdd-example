@@ -14,11 +14,12 @@ class CountryController {
    * @param {HttpResponse} res
    * @param {Function} next
    */
-  getCapital(req, res, next) {
-    console.log(this.name);
-    // TODO implement
-    res.send({});
-    next();
+  async getCapital(req, res) {
+    const { name } = req.params;
+    const serviceResponse = await this.countryService.callForCountryName(name);
+    const country = await this.countryService.saveCountryData(name, serviceResponse);
+
+    res.send({ name, capital: country.capital });
   }
 }
 

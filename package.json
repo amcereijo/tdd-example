@@ -10,9 +10,9 @@
     "start:pre:inspect": "cross-env NODE_ENV=pre node --inspect ./bin/www",
     "start:debug": "cross-env NODE_ENV=dev node debug ./bin/www",
     "test": "cross-env npm run coverage && npm run lint && npm run notes",
-    "coverage": "cross-env ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --ci",
-    "test:unit": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --ci",
-    "test:dev": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --watch",
+    "coverage": "cross-env ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --forceExit --maxWorkers 2 --ci",
+    "test:unit": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --forceExit --maxWorkers 2 --ci",
+    "test:dev": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --forceExit --maxWorkers 2 --watch",
     "lint": "eslint --ext .js api bin/www config",
     "lint:fix": "eslint --fix --ext .js api bin/www config",
     "notes": "notes *.js api config"
@@ -35,6 +35,7 @@
     "mongoose": "^5.4.16",
     "mongoose-connect": "0.0.3",
     "nock": "^10.0.6",
+    "superagent": "^4.1.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
