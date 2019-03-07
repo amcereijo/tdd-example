@@ -8,6 +8,12 @@ class CountryController {
     this.countryService = countryService;
   }
 
+  async loadCountryUsingService(name) {
+    const serviceResponse = await this.countryService.callForCountryName(name);
+    const country = await this.countryService.saveCountryData(name, serviceResponse);
+    return country;
+  }
+
   /**
    *
    * @param {HttpRequest} req
@@ -19,8 +25,7 @@ class CountryController {
 
     try {
       if (!country) {
-        const serviceResponse = await this.countryService.callForCountryName(name);
-        country = await this.countryService.saveCountryData(name, serviceResponse);
+        country = await this.loadCountryUsingService(name);
       }
 
       res.send({ name, capital: country.capital });
