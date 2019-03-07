@@ -6,6 +6,7 @@ const testResponses = require('../../test/responses');
 const config = require('../../config');
 const app = require('../../');
 const CountryModel = require('../../models/country');
+const errors = require('../errors');
 
 describe('CountryController', () => {
   before(() => db.connect());
@@ -74,6 +75,36 @@ describe('CountryController', () => {
       it('should return the capital to the client', () => {
         expect(response.body.capital).to.eql(testResponses.get[0].capital);
         expect(response.body.name).to.eql(countryName);
+      });
+    });
+
+    describe('when it receive a country name and it is not found in database or service', () => {
+      const countryName = 'Spain';
+
+      let response;
+      before(async (done) => {
+        nock(config.services.countries.host)
+          .get(`${config.services.countries.namePath}/${countryName}`)
+          .reply(404, testResponses.getEmpty);
+
+        supertest(app)
+          .get(`/country/${countryName}/capital`)
+          .end((req, res) => {
+            response = res;
+            done();
+          });
+      });
+      after(() => {
+        nock.cleanAll();
+      });
+
+      it('should send error 500', () => {
+        expect(response.statusCode).to.eql(500);
+      });
+
+      it('should return the error to the client', () => {
+        expect(response.body.message).to.eql(errors.DataNotFoundInServiceError.message);
+        expect(response.body.code).to.eql(500);
       });
     });
   });

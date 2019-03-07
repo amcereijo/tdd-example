@@ -3,9 +3,10 @@ const CountryController = require('./country.controller');
 const CountryModel = require('../../models/country');
 const CountryService = require('../services/country.service');
 const config = require('../../config/server');
+const errors = require('../errors');
 
 const monitController = new MonitController();
-const countryService = new CountryService(CountryModel, config);
+const countryService = new CountryService(CountryModel, config, errors);
 const countryController = new CountryController(countryService);
 
 module.exports = [

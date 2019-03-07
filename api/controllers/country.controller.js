@@ -17,12 +17,16 @@ class CountryController {
     const { name } = req.params;
     let country = await this.countryService.findCountryByName(name);
 
-    if (!country) {
-      const serviceResponse = await this.countryService.callForCountryName(name);
-      country = await this.countryService.saveCountryData(name, serviceResponse);
-    }
+    try {
+      if (!country) {
+        const serviceResponse = await this.countryService.callForCountryName(name);
+        country = await this.countryService.saveCountryData(name, serviceResponse);
+      }
 
-    res.send({ name, capital: country.capital });
+      res.send({ name, capital: country.capital });
+    } catch (err) {
+      res.status(500).send({ code: 500, message: err.message });
+    }
   }
 }
 

@@ -31,4 +31,8 @@ module.exports = {
     }],
     cioc: 'ESP',
   }],
+  getEmpty: {
+    status: 404,
+    message: 'Not Found',
+  },
 };

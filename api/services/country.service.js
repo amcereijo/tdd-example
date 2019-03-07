@@ -9,14 +9,28 @@ class CountryService {
    *
    * @param {Object} CountryModel mongoose object for "countries" collection
    */
-  constructor(CountryModel, config) {
+  constructor(CountryModel, config, errors) {
     this.CountryModel = CountryModel;
     this.config = config.services.countries;
+    this.errors = errors;
+  }
+
+  maybeThrowNoDataFromServie(errorResponse) {
+    if (errorResponse.status === 404) {
+      throw new this.errors.DataNotFoundInServiceError();
+    }
   }
 
   async callForCountryName(name) {
-    const res = await request.get(`${this.config.host}${this.config.namePath}/${name}`);
-    return res.body;
+    try {
+      const res = await request.get(`${this.config.host}${this.config.namePath}/${name}`);
+      this.maybeThrowNoDataFromServie(res.body);
+
+      return res.body;
+    } catch (errorResponse) {
+      this.maybeThrowNoDataFromServie(errorResponse);
+      throw errorResponse;
+    }
   }
 
   saveCountryData(name, serviceResponse) {
