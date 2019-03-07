@@ -23,6 +23,10 @@ class CountryService {
     const country = new this.CountryModel({ name, capital: getCapital(serviceResponse) });
     return country.save();
   }
+
+  findCountryByName(name) {
+    return this.CountryModel.findOne({ name });
+  }
 }
 
 module.exports = CountryService;
