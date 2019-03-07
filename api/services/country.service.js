@@ -21,16 +21,16 @@ class CountryService {
     }
   }
 
-  async callForCountryName(name) {
-    try {
-      const res = await request.get(`${this.config.host}${this.config.namePath}/${name}`);
-      this.maybeThrowNoDataFromServie(res.body);
+  processsError(errorResponse) {
+    this.maybeThrowNoDataFromServie(errorResponse);
+    throw new this.errors.ServiceNotAvailableError();
+  }
 
-      return res.body;
-    } catch (errorResponse) {
-      this.maybeThrowNoDataFromServie(errorResponse);
-      throw new this.errors.ServiceNotAvailableError();
-    }
+  async callForCountryName(name) {
+    return Promise.resolve()
+      .then(() => request.get(`${this.config.host}${this.config.namePath}/${name}`))
+      .then(response => response.body)
+      .catch(this.processsError.bind(this));
   }
 
   saveCountryData(name, serviceResponse) {
