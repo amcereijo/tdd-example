@@ -1,0 +1,78 @@
+{
+  "name": "tdd-example",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node ./bin/www",
+    "start:dev": "cross-env NODE_ENV=dev node ./bin/www",
+    "start:dev:inspect": "cross-env NODE_ENV=dev node --inspect ./bin/www",
+    "start:pre": "cross-env NODE_ENV=pre node ./bin/www",
+    "start:pre:inspect": "cross-env NODE_ENV=pre node --inspect ./bin/www",
+    "start:debug": "cross-env NODE_ENV=dev node debug ./bin/www",
+    "test": "cross-env npm run coverage && npm run lint && npm run notes",
+    "coverage": "cross-env ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --ci",
+    "test:unit": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --ci",
+    "test:dev": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --watch",
+    "lint": "eslint --ext .js api bin/www config",
+    "lint:fix": "eslint --fix --ext .js api bin/www config",
+    "notes": "notes *.js api config"
+  },
+  "pre-push": [
+    "test"
+  ],
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
+    "custom-env": "^1.0.0",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-winston": "^3.1.0",
+    "helmet": "^3.15.0",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.4.16",
+    "mongoose-connect": "0.0.3",
+    "nock": "^10.0.6",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.2",
+    "jest": "^23.6.0",
+    "jest-circus": "^23.6.0",
+    "mongodb": "^3.1.10",
+    "mongodb-memory-server": "^2.7.4",
+    "notes": "0.0.4",
+    "np": "^3.0.4",
+    "pre-push": "^0.1.1",
+    "sinon": "^6.3.4",
+    "supertest": "^3.3.0"
+  },
+  "jest": {
+    "bail": true,
+    "testEnvironment": "<rootDir>/test/mongo-test-environment",
+    "setupTestFrameworkScriptFile": "<rootDir>/test/bootstrap-jest.js",
+    "coverageReporters": [
+      "json",
+      "text-summary",
+      "lcov",
+      "clover"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/api/**",
+      "**/config/express/**"
+    ],
+    "coveragePathIgnorePatterns": [
+      "test/*",
+      "bin/*",
+      "config/*"
+    ],
+    "testRunner": "jest-circus/runner"
+  }
+}

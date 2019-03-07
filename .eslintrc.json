@@ -1,0 +1,23 @@
+{
+  "extends": "airbnb-base",
+  "plugins": [
+    "jest"
+  ],
+  "env": {
+    "node": true,
+    "jest/globals": true
+  },
+  "globals": {
+    "before": true,
+    "after": true,
+    "expect": true,
+    "chaiRequest": true,
+    "__MONGO_URI__": true
+  },
+  "rules": {
+    "jest/no-disabled-tests": "error",
+    "jest/no-focused-tests": "error",
+    "no-console": "off",
+    "no-underscore-dangle": "off"
+  }
+}
