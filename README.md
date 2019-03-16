@@ -1,5 +1,5 @@
 ## TDD example
-Project to show how to apply TDD with Node.js
+Project to show how to apply TDD with Node.js (read the article [here](https://medium.com/fintonic-engineering/tdd-not-so-easy-not-so-hard-8c64679e3641))
 
 ### Requeriments:
  * node 8 or higher.
