@@ -19,5 +19,7 @@ options.useNewUrlParser = true;
 module.exports = () => {
   // conecto to mongo
   mongoose.Promise = Promise;
-  mongooseConnect(mongoose, uri, options);
+  if (process.env.NODE_ENV !== 'test') {
+    mongooseConnect(mongoose, uri, options);
+  }
 };

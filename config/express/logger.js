@@ -1,7 +1,6 @@
 const winston = require('winston');
 const expressWinston = require('express-winston');
 
-
 function initLogger(app) {
   if (process.env.NODE_ENV === 'test') {
     return;
@@ -23,6 +22,5 @@ function initLogger(app) {
 
   console.log('[server] Loaded logger middleware');
 }
-
 
 module.exports = initLogger;

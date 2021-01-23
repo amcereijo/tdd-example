@@ -29,7 +29,7 @@ class CountryService {
   async callForCountryName(name) {
     return Promise.resolve()
       .then(() => request.get(`${this.config.host}${this.config.namePath}/${name}`))
-      .then(response => response.body)
+      .then((response) => response.body)
       .catch(this.processsError.bind(this));
   }
 

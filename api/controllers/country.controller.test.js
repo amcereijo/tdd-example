@@ -4,7 +4,7 @@ const supertest = require('supertest');
 const db = require('../../test/test-db')(mongoose);
 const testResponses = require('../../test/responses');
 const config = require('../../config');
-const app = require('../../');
+const app = require('../..');
 const CountryModel = require('../../models/country');
 const errors = require('../errors');
 
@@ -16,21 +16,17 @@ describe('CountryController', () => {
     describe('when it receive a country name and not have the country in database and all works', () => {
       const countryName = 'Spain';
       let response;
-      before((done) => {
+      before(async () => {
         nock(config.services.countries.host)
           .get(`${config.services.countries.namePath}/${countryName}`)
           .reply(200, testResponses.get);
 
-        supertest(app)
-          .get(`/country/${countryName}/capital`)
-          .end((req, res) => {
-            response = res;
-            done();
-          });
+        response = await supertest(app)
+          .get(`/country/${countryName}/capital`);
       });
       after(() => {
         nock.cleanAll();
-        return CountryModel.remove({});
+        return CountryModel.deleteMany({});
       });
 
       it('should save the capital in database', (done) => {
@@ -50,7 +46,7 @@ describe('CountryController', () => {
       const countryName = 'Spain';
 
       let response;
-      before(async (done) => {
+      before(async () => {
         nock(config.services.countries.host)
           .get(`${config.services.countries.namePath}/${countryName}`)
           .reply(500, 'ERROR');
@@ -60,16 +56,12 @@ describe('CountryController', () => {
           capital: testResponses.get[0].capital,
         }).save();
 
-        supertest(app)
-          .get(`/country/${countryName}/capital`)
-          .end((req, res) => {
-            response = res;
-            done();
-          });
+        response = await supertest(app)
+          .get(`/country/${countryName}/capital`);
       });
       after(() => {
         nock.cleanAll();
-        return CountryModel.remove({});
+        return CountryModel.deleteMany({});
       });
 
       it('should return the capital to the client', () => {
@@ -82,17 +74,13 @@ describe('CountryController', () => {
       const countryName = 'Spain';
 
       let response;
-      before(async (done) => {
+      before(async () => {
         nock(config.services.countries.host)
           .get(`${config.services.countries.namePath}/${countryName}`)
           .reply(404, testResponses.getEmpty);
 
-        supertest(app)
-          .get(`/country/${countryName}/capital`)
-          .end((req, res) => {
-            response = res;
-            done();
-          });
+        response = await supertest(app)
+          .get(`/country/${countryName}/capital`);
       });
       after(() => {
         nock.cleanAll();
@@ -112,17 +100,13 @@ describe('CountryController', () => {
       const countryName = 'Spain';
 
       let response;
-      before(async (done) => {
+      before(async () => {
         nock(config.services.countries.host)
           .get(`${config.services.countries.namePath}/${countryName}`)
           .reply(500, 'Unexpected error');
 
-        supertest(app)
-          .get(`/country/${countryName}/capital`)
-          .end((req, res) => {
-            response = res;
-            done();
-          });
+        response = await supertest(app)
+          .get(`/country/${countryName}/capital`);
       });
       after(() => {
         nock.cleanAll();
