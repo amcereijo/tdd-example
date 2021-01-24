@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const nock = require('nock');
 const supertest = require('supertest');
+const csvSync = require('csv/lib/sync');
 const db = require('../../test/test-db')(mongoose);
 const testResponses = require('../../test/responses');
 const config = require('../../config');
@@ -119,6 +120,54 @@ describe('CountryController', () => {
       it('should return the error to the client', () => {
         expect(response.body.message).to.eql(errors.ServiceNotAvailableError.message);
         expect(response.body.code).to.eql(500);
+      });
+    });
+  });
+
+  describe('GET /country/resume', () => {
+    describe('when there ara element in db', () => {
+      let response;
+
+      before(async () => {
+        await CountryModel.insertMany([
+          { name: 'España', capital: 'Madrid' },
+          { name: 'Portugal', capital: 'Lisboa' },
+        ]);
+
+        response = await supertest(app)
+          .get('/country/resume')
+          .buffer()
+          .parse((res, callback) => {
+            res.setEncoding('binary');
+            res.data = '';
+            res.on('data', (chunk) => {
+              res.data += chunk;
+            });
+            res.on('end', () => {
+              callback(null, Buffer.from(res.data, 'binary'));
+            });
+          });
+      });
+      after(() => {});
+
+      it('should return correct CSV file response', () => {
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-disposition']).to.be.equal('attachment; filename=resume.csv');
+        expect(response.headers['content-type']).to.be.equal('text/csv; charset=utf-8');
+        expect(response.headers['content-length']).to.not.equal('0');
+
+        // validate downloaded content
+        const csvContent = csvSync.parse(response.body, {
+          delimiter: ',',
+          columns: true,
+        });
+
+        expect(csvContent).to.have.lengthOf(2);
+
+        expect(csvContent[0].name).to.eql('España');
+        expect(csvContent[0].capital).to.eql('Madrid');
+        expect(csvContent[1].name).to.eql('Portugal');
+        expect(csvContent[1].capital).to.eql('Lisboa');
       });
     });
   });

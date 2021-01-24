@@ -41,6 +41,10 @@ class CountryService {
   findCountryByName(name) {
     return this.CountryModel.findOne({ name });
   }
+
+  findAllCountries() {
+    return this.CountryModel.find();
+  }
 }
 
 module.exports = CountryService;
