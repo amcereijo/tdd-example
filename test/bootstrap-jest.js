@@ -1,4 +1,3 @@
-
 const chai = require('chai');
 
 // Uncomment if you use sinon-chai

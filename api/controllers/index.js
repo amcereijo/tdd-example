@@ -1,5 +1,5 @@
 const MonitController = require('./monit.controller');
-const CountryController = require('./countny.controller');
+const CountryController = require('./country.controller');
 const CountryModel = require('../../models/country');
 const CountryService = require('../services/country.service');
 
