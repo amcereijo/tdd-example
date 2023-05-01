@@ -3,18 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=production node ./bin/www",
-    "start:dev": "cross-env NODE_ENV=dev node ./bin/www",
-    "start:dev:inspect": "cross-env NODE_ENV=dev node --inspect ./bin/www",
-    "start:pre": "cross-env NODE_ENV=pre node ./bin/www",
-    "start:pre:inspect": "cross-env NODE_ENV=pre node --inspect ./bin/www",
-    "start:debug": "cross-env NODE_ENV=dev node debug ./bin/www",
+    "build": "tsc",
+    "start:dev": "cross-env NODE_ENV=production ts-node ./src/server",
+    "start": "cross-env NODE_ENV=production node ./dist/server",
     "test": "cross-env npm run coverage && npm run lint",
-    "coverage": "cross-env ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --ci",
-    "test:unit": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --ci",
-    "test:dev": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --detectOpenHandles --verbose --maxWorkers 2 --watch",
-    "lint": "eslint --ext .js api bin/www config",
-    "lint:fix": "eslint --fix --ext .js api bin/www config"
+    "coverage": "cross-env ENV_TEST=.env.test NODE_ENV=test jest",
+    "test:unit": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest",
+    "test:dev": "cross-env LOG=true ENV_TEST=.env.test NODE_ENV=test jest --watch",
+    "lint": "eslint --ext .js src",
+    "lint:fix": "eslint --fix --ext .js|.ts src"
   },
   "pre-push": [
     "test"
@@ -37,7 +34,8 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "chai": "^4.3.7",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.1",
     "eslint": "^8.39.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
@@ -48,27 +46,9 @@
     "mongodb-memory-server": "^8.12.2",
     "np": "^7.7.0",
     "pre-push": "^0.1.4",
-    "sinon": "^15.0.4",
-    "supertest": "^6.3.3"
-  },
-  "jest": {
-    "testEnvironment": "<rootDir>/test/mongo-test-environment",
-    "setupFilesAfterEnv": ["<rootDir>/test/bootstrap-jest.js"],
-    "coverageReporters": [
-      "json",
-      "text-summary",
-      "lcov",
-      "clover"
-    ],
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "**/api/**",
-      "**/config/express/**"
-    ],
-    "coveragePathIgnorePatterns": [
-      "test/*",
-      "bin/*",
-      "config/*"
-    ]
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   }
 }

@@ -8,10 +8,6 @@
     "jest/globals": true
   },
   "globals": {
-    "before": true,
-    "after": true,
-    "expect": true,
-    "chaiRequest": true,
     "__MONGO_URI__": true
   },
   "rules": {

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "incremental": true,
+    "removeComments": true,
+    "target": "ES2022",
+    "module": "commonjs",
+    "outDir": "dist",
+    "allowJs": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.spec.*", "coverage"]
+}

@@ -4,11 +4,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 
 class MongoDbEnvironment extends NodeEnvironment {
   async setup() {
-    this.mongod = await MongoMemoryServer.create({
-      binary: {
-        version: '3.2.21',
-      },
-    });
+    this.mongod = await MongoMemoryServer.create();
 
     await super.setup();
 
